@@ -1,0 +1,6 @@
+[submodule "ugv_packages"]
+	path = ugv_packages
+	url = https://github.com/RafaelaChaffilla/ugv_packages.git
+[submodule "uav_packages"]
+	path = uav_packages
+	url = https://github.com/RafaelaChaffilla/uav_packages.git
