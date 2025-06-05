@@ -1,0 +1,36 @@
+<launch>
+    <arg default="0.0" name="init_x" />
+    <arg default="0.0" name="init_y" />
+    <arg default="0.0" name="init_th" />
+
+    <node name="imu_noise_adder" output="screen" pkg="noise_simulator" type="imu_noise.py">
+        <param name="angular_velocity_stddev" value="0.1745" /> 
+        <param name="linear_acceleration_stddev" value="0.08" /> 
+        <param name="orientation_stddev" value="0.087" /> 
+        <param name="gaussian_noise" value="0.0" /> 
+        
+        <param name="max_meas_ang" value="4.36" /> 
+        <param name="max_meas_lin" value="19.6" /> 
+        <param name="min_meas_ang" value="-4.36" />
+        <param name="min_meas_lin" value="-19.6" />
+        
+        <param name="no_noise_imu_topic" value="idmind_imu/imu/no_noise" />
+    </node>
+
+    <node name="encoder_noise_adder" output="screen" pkg="noise_simulator" type="wheel_noise_basic.py">
+        <param name="wheel_radius" value="0.0875" /> 
+        <param name="wheel_dist" value="0.394" /> 
+        <param name="wheel_max_accel" value="1." />
+        <param name="speed_stddev" value="0.05" />
+        <param name="gaussian_noise" value="0.0" /> 
+        <param name="radius_bias_left" value="0.0" /> 
+        <param name="radius_bias_right" value="0.0" /> 
+        <param name="track_width_bias" value="0.0" /> 
+        <param name="slipage_lin" value="1.05" /> 
+        <param name="slipage_ang" value="1.05" /> 
+        <param name="init_x" value="$(arg init_x)" /> 
+        <param name="init_y" value="$(arg init_y)" /> 
+        <param name="init_th" value="$(arg init_th)" /> 
+    </node>
+
+</launch>

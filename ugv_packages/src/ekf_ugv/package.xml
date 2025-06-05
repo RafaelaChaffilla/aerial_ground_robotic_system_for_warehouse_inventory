@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ekf_ugv</name>
+  <version>0.0.0</version>
+  <description>The ekf_ugv package</description>
+
+  <maintainer email="rafaela.chaffilla@tecnico.ulisboa.pt">Rafaela Chaffilla</maintainer>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+</package>

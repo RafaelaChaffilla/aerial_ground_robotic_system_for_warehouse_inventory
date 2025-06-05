@@ -1,0 +1,53 @@
+<launch>
+    <arg default="/rovid/idmind_imu/imu" name="imu_topic" />
+    <arg default="/rovid/idmind_motors/odom" name="odom_topic" />
+    <arg default="/rovid/hectorrafa_odom" name="position_topic" />
+    <arg default="/rovid/ekf_rafa" name="publish_topic" />
+
+    <arg default="false" name="publish_tf" />
+    <arg default="rovid/base_footprint" name="base_frame" />
+    <arg default="rovid/odom" name="odom_frame" />
+
+    <arg default="10.0" name="init_x" />
+    <arg default="23" name="init_y" />
+    <arg default="0.0" name="init_th" />
+
+    <arg default="0.01" name="process_noise_x" />
+    <arg default="0.01" name="process_noise_y" />
+    <arg default="0.01" name="process_noise_th" />
+    <arg default="0.9" name="process_noise_vx" />
+    <arg default="0.9" name="process_noise_vy" />
+    <arg default="0.9" name="process_noise_vth" />
+    <arg default="0.9" name="process_noise_acc_x" />
+
+    <arg default="0.01" name="init_noise_P_value" />        
+
+    <arg default="100." name="frequency" />
+    <arg default="2." name="sensor_timeout" />
+
+    <arg default="ekf_ugv" name="node_name" />
+
+    <node if="$(arg publish_tf)" pkg="tf2_ros" type="static_transform_publisher" name="map" args="0 0 0 0 0 0 1 map $(arg odom_frame)" />
+
+    <node name="$(arg node_name)" output="screen" pkg="ekf_rafa" type="ekf_w_latency.py">
+        <rosparam param="init_state" subst_value="true">[$(arg init_x), $(arg init_y), $(arg init_th), 0., 0., 0., 0.]</rosparam>
+        <rosparam param="process_noise_Q" subst_value="true">[[$(arg process_noise_x), 0., 0., 0., 0., 0., 0.],  
+                                                              [0., $(arg process_noise_y), 0., 0., 0., 0., 0.], 
+                                                              [0., 0., $(arg process_noise_th), 0., 0., 0., 0.],
+                                                              [0., 0., 0., $(arg process_noise_vx), 0., 0., 0.],
+                                                              [0., 0., 0., 0., $(arg process_noise_vy), 0., 0.],
+                                                              [0., 0., 0., 0., 0., $(arg process_noise_vth), 0.],
+                                                              [0., 0., 0., 0., 0., 0., $(arg process_noise_acc_x)]]</rosparam>
+        
+        <param name="imu_topic" value="$(arg imu_topic)" />
+        <param name="odom_topic" value="$(arg odom_topic)" />
+        <param name="publish_topic" value="$(arg publish_topic)" />
+        <param name="position_topic" value="$(arg position_topic)" />
+
+        <param name="frequency"  value="$(arg frequency)"  />
+        <param name="publish_tf" value="$(arg publish_tf)" />
+        <param name="base_frame" value="$(arg base_frame)" />
+        <param name="odom_frame" value="$(arg odom_frame)" />
+    </node>
+
+</launch>

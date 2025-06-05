@@ -1,0 +1,28 @@
+<launch>
+    <arg default="/rovid/full_laser_scan" name="scan_topic" />
+    
+    <arg default="/rovid/ekf_ugv" name="odom_topic" />
+    <arg default="/rovid/map" name="map_topic" />
+    
+    <arg default="/rovid/s2mm_odom" name="publish_to_topic" />
+    
+    <arg default="1" name="init_x" />
+    <arg default="1" name="init_y" />
+    <arg default="0" name="init_th" />
+
+    <arg default="2" name="frequency" />
+    <arg default="true" name="publish_tf" />
+
+    <node name="s2mm_ugv" output="screen" pkg="s2mm_ugv" type="s2mm_ugv_node">
+        <param name="localization_topic" value="$(arg publish_to_topic)" />
+        <param name="scan_topic" value="$(arg scan_topic)" />
+        <param name="odom_topic" value="$(arg odom_topic)" />
+        <param name="map_topic" value="$(arg map_topic)" />
+        <param name="init_x" value="$(arg init_x)" />
+        <param name="init_y" value="$(arg init_y)" />
+        <param name="init_th" value="$(arg init_th)" />
+        <param name="frequency" value="$(arg frequency)" />
+        <param name="publish_tf" value="$(arg publish_tf)" />
+        <param name="output_folder" value="$(arg output_folder)" />
+    </node>
+</launch>

@@ -1,0 +1,54 @@
+<launch>
+    <!-- Define real/simulation  and configuration -->    
+    <arg name="simulation" default="true"/>                         <!-- Define if it will run on a robot or simulation -->
+    <arg name="config"     default="8_areas_full_bottom" />         <!-- Load configuration for worlds, maps, etc -->
+    <arg name="robot_name" default="rovid" />                       <!-- Define Robot name -->
+    
+    <!-- Initial Position --> 
+    <arg name="init_x"  default="-9.5" />
+    <arg name="init_y"  default="-3.5" />
+    <arg name="init_z"  default="0.2" />
+    <arg name="init_th" default="0.0" />   
+
+    <group ns="$(arg robot_name)">
+
+        <group if="$(arg simulation)">
+            <!-- Launch world in Gazebo -->
+            <include file="$(find gazebo_ros)/launch/empty_world.launch">
+                <arg default="$(find ugv_localization)/worlds/$(arg config).world" name="world_name" />
+                <arg name="paused" value="false" />
+                <arg name="gui" value="false" />
+            </include>
+
+            <!-- simulate sensor noise -->
+            <include file="$(find noise_simulator)/launch/noise.launch" >
+                <arg name="init_x" value="$(arg init_x)" />
+                <arg name="init_y" value="$(arg init_y)" />
+                <arg name="init_th" value="$(arg init_th)" />
+            </include>
+        </group>
+        
+        <!-- ************* Localization nodes ************** -->
+        <node name="map_server" pkg="map_server" type="map_server" args="$(find ugv_localization)/maps/$(arg config)/mapa.yaml" output="screen" />
+    
+        <include file="$(find ekf_ugv)/launch/ekf.launch">
+            <arg default="$(arg init_x)"  name="init_x"  />
+            <arg default="$(arg init_y)"  name="init_y"  />
+            <arg default="$(arg init_th)" name="init_th" />
+
+            <arg default="true"            name="publish_tf" />
+            <arg default="rovid/base_footprint" name="base_frame" />
+            <arg default="rovid/odom"      name="odom_frame" />        
+        </include>
+
+        <include file="$(find s2mm_ugv)/launch/s2mm_ugv.launch">
+            <arg name="init_x" value="$(arg init_x)" />
+            <arg name="init_y" value="$(arg init_y)" />
+            <arg name="init_th" value="$(arg init_th)" />
+        </include>
+
+        <!-- ************************************************** -->
+
+    </group>
+
+</launch>
