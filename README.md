@@ -6,6 +6,7 @@ This repository contains code that is intended to be used on the two different r
 
  1. **ugv_packages**: Contains the necessary packages for the UGV localization module, and packages for the simulation of the warehouse environment and sensors. These packages were designed for *ROS Melodic*.
  2.  **uav_packages**: Contains the necessary packages for the UAV ArUco-based localization module, integration with ArduPilot through MAVROS and the high-level coordination node between the UAV and the UGV. These packages were designed for *ROS Noetic*.
+ 
 A more in depth description of each folder can be found in their respective README.md files.
 
 ### Installation:
